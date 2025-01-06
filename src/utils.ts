@@ -27,6 +27,7 @@ export function useGetClockConfigFromURL(): ClockConfig {
 export function getURLFromClockConfig(config: ClockConfig): string {
   return (
     window.location.origin +
+    window.location.pathname +
     "?" +
     new URLSearchParams({
       interval: config.interval.toString(),
@@ -54,15 +55,19 @@ function getClockData(config: ClockConfig): ClockData {
     minute: "2-digit",
     second: "2-digit",
     timeZoneName: "short",
-  }).format(
-    new Date(),
-  );
+  }).format(new Date());
 
   const timeToStartOfInterval = currentTime % config.interval;
-  const timeToEndOfInterval = timeToStartOfInterval === 0 ? 0 : config.interval - timeToStartOfInterval; // seconds
+  const timeToEndOfInterval =
+    timeToStartOfInterval === 0 ? 0 : config.interval - timeToStartOfInterval; // seconds
 
-  const timeToEndOfIntervalMM = String(Math.floor(timeToEndOfInterval / 60)).padStart(2, '0');
-  const timeToEndOfIntervalSS = String(timeToEndOfInterval % 60).padStart(2, '0');
+  const timeToEndOfIntervalMM = String(
+    Math.floor(timeToEndOfInterval / 60),
+  ).padStart(2, "0");
+  const timeToEndOfIntervalSS = String(timeToEndOfInterval % 60).padStart(
+    2,
+    "0",
+  );
   const timeToEndOfIntervalStr = `${timeToEndOfIntervalMM}:${
     timeToEndOfIntervalSS
   }`;

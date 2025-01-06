@@ -17,7 +17,7 @@ export type ClockData = {
   currentTimeLocaleStr: string; // HH:MM:SS timezone_name
 
   percentageOfCurrentInterval: number; // [0, 99.9]
-  
+
   isWaiting: boolean;
 
   //barCount: number // TODO

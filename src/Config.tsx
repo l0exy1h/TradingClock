@@ -6,10 +6,7 @@ import {
   Stack,
 } from "@mui/material";
 import { getURLFromClockConfig, useGetClockConfigFromURL } from "./utils";
-import {
-  intervalPresets,
-  offsetPresets,
-} from "./models";
+import { intervalPresets, offsetPresets } from "./models";
 
 export default function Config() {
   const config = useGetClockConfigFromURL();
