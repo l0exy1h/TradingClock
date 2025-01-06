@@ -1,21 +1,20 @@
-import { useMemo } from "react";
-import { ClockConfig, ClockData } from "./models";
+import { useEffect, useMemo, useState } from "react";
+import { ClockConfig, ClockData, getDefaultClockConfig } from "./models";
 
-// return undefined when errored out
-export function useGetClockConfigFromURL(): ClockConfig | undefined {
+export function useGetClockConfigFromURL(): ClockConfig {
   return useMemo(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
     const intervalStr = urlParams.get("interval");
     const offsetStr = urlParams.get("offset");
     if (intervalStr === null || offsetStr === null) {
-      return undefined;
+      return getDefaultClockConfig();
     }
 
     const interval = parseInt(intervalStr);
     const offset = parseInt(offsetStr);
     if (isNaN(interval) || interval === 0 || isNaN(offset) || offset === 0) {
-      return undefined;
+      return getDefaultClockConfig();
     }
 
     return {
@@ -48,27 +47,29 @@ export function useGetClockData(config: ClockConfig): ClockData | undefined {
 }
 
 function getClockData(config: ClockConfig): ClockData {
-  const currentTime = new Math.floor(Date.now() / 1000); // unix seconds
+  const currentTime = Math.floor(Date.now() / 1000); // unix seconds
 
-  const options = {
+  const currentTimeLocaleStr = new Intl.DateTimeFormat("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     timeZoneName: "short",
-  };
-  const currentTimeLocaleStr = new Intl.DateTimeFormat("en-US", options).format(
+  }).format(
     new Date(),
   );
 
   const timeToStartOfInterval = currentTime % config.interval;
-  const timeToEndOfInterval = config.interval - timeToStartOfInterval; // seconds
-  const timeToEndOfIntervalStr = `${Math.floor(timeToEndOfInterval / 60)}:${
-    timeToEndOfInterval % 60
+  const timeToEndOfInterval = timeToStartOfInterval === 0 ? 0 : config.interval - timeToStartOfInterval; // seconds
+
+  const timeToEndOfIntervalMM = String(Math.floor(timeToEndOfInterval / 60)).padStart(2, '0');
+  const timeToEndOfIntervalSS = String(timeToEndOfInterval % 60).padStart(2, '0');
+  const timeToEndOfIntervalStr = `${timeToEndOfIntervalMM}:${
+    timeToEndOfIntervalSS
   }`;
 
-  const isWaiting = timeToEndOfInterval <= config.offset;
+  const isWaiting = timeToEndOfInterval > config.offset;
   const percentageOfCurrentInterval = Math.floor(
-    (timeToEndOfInterval / config.interval) * 100,
+    (timeToStartOfInterval / config.interval) * 100,
   );
 
   return {

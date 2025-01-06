@@ -7,13 +7,12 @@ import {
 } from "@mui/material";
 import { getURLFromClockConfig, useGetClockConfigFromURL } from "./utils";
 import {
-  getDefaultClockConfig,
   intervalPresets,
   offsetPresets,
 } from "./models";
 
 export default function Config() {
-  const config = useGetClockConfigFromURL() ?? getDefaultClockConfig();
+  const config = useGetClockConfigFromURL();
   return (
     <Stack direction="row" spacing={2} justifyContent="center">
       <FormControl>

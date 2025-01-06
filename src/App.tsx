@@ -13,9 +13,9 @@ export default function App() {
   return (
     <ThemeProvider theme={lightTheme}>
       <Container sx={{ width: "100vw" }}>
-        <Stack spacing={2}>
+        <Stack spacing={10} alignItems="center">
           <Config />
-          {/* <Clock /> */}
+          <Clock />
         </Stack>
       </Container>
     </ThemeProvider>
