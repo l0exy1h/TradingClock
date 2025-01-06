@@ -4,13 +4,13 @@ import {
   MenuItem,
   Select,
   Stack,
-} from '@mui/material';
-import { getURLFromClockConfig, useGetClockConfigFromURL } from './utils';
+} from "@mui/material";
+import { getURLFromClockConfig, useGetClockConfigFromURL } from "./utils";
 import {
   getDefaultClockConfig,
   intervalPresets,
   offsetPresets,
-} from './models';
+} from "./models";
 
 export default function Config() {
   const config = useGetClockConfigFromURL() ?? getDefaultClockConfig();
