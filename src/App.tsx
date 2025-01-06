@@ -9,7 +9,7 @@ const lightTheme = createTheme({
   },
 });
 
-function App() {
+export default function App() {
   return (
     <ThemeProvider theme={lightTheme}>
       <Container sx={{ width: "100vw" }}>
@@ -21,5 +21,3 @@ function App() {
     </ThemeProvider>
   );
 }
-
-export default App;
