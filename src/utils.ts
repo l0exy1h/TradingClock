@@ -74,6 +74,7 @@ function getClockData(config: ClockConfig): ClockData {
 
   return {
     currentTimeLocaleStr,
+    timeToEndOfInterval,
     timeToEndOfIntervalStr,
     isWaiting,
     percentageOfCurrentInterval,

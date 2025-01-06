@@ -1,5 +1,9 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useGetClockConfigFromURL, useGetClockData } from "./utils";
+import { ClockConfig, ClockData } from "./models";
+import { useEffect, useRef } from "react";
+import candleEndSound from './assets/candleEndSound.mp3';
+import decisionMakingSound from './assets/decisionMakingSound.mp3';
 
 const clockSize = 233;
 
@@ -11,6 +15,7 @@ export default function Clock() {
 
   const color = clockData.isWaiting ? "primary" : "warning";
   return (
+    <>
     <Box sx={{ position: "relative", display: "inline-flex" }}>
       <CircularProgress
         variant="determinate"
@@ -62,5 +67,31 @@ export default function Clock() {
         </Stack>
       </Box>
     </Box>
+    <ClockAudio clockData={clockData} clockConfig={clockConfig}/>
+    </>
   );
+}
+
+type ClockAudioProps = {
+  clockData: ClockData;
+  clockConfig: ClockConfig;
+}
+
+function ClockAudio(props: ClockAudioProps) {
+  const candleEndSoundRef = useRef<HTMLAudioElement>(null);
+  const decisionMakingSoundRef = useRef<HTMLAudioElement>(null);
+  useEffect(() => {
+    if (props.clockData.timeToEndOfInterval === 0) {
+      candleEndSoundRef.current?.play();
+    }
+    if (props.clockData.timeToEndOfInterval === props.clockConfig.offset) {
+      decisionMakingSoundRef.current?.play();
+    }
+  }, [props.clockData.timeToEndOfInterval]);
+  return (
+    <div style={{display: "none"}}>
+      <audio ref={candleEndSoundRef} src={candleEndSound} />
+      <audio ref={decisionMakingSoundRef} src={decisionMakingSound} />
+    </div>
+  )
 }

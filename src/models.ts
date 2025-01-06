@@ -10,7 +10,7 @@ export type ClockConfig = {
 // 9:30 - 9:34 is considered "waiting"
 // 9:34 - 9:35 is considered "decision making"
 export type ClockData = {
-  // timeToEndOfInterval: number; // seconds
+  timeToEndOfInterval: number; // seconds
   timeToEndOfIntervalStr: string; // MM:SS
 
   // currentTime: number; // unix seconds
